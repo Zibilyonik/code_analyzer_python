@@ -15,18 +15,20 @@ def analyzer(filename):
             if code.strip().endswith(";"):
                 print(f"Line {line_num}: S003 Unnecessary semicolon")
             if comment:
-                if code.endswith(" "):
-                    print(
-                        f"Line {line_num}: S004 At least two spaces before inline comment required"
-                    )
+                if code:
+                    reversed_code = code[::-1]
+                    if count_space(reversed_code) < 1:
+                        print(
+                            f"Line {line_num}: S004 At least two spaces before inline comment required"
+                        )
                 if "todo" in comment[0].lower():
                     print(f"Line {line_num}: S005 TODO found")
             if code.strip() == "":
                 blank_lines += 1
             else:
+                if blank_lines > 2:
+                    print(f"Line {line_num}: S006 More than two blank lines used")
                 blank_lines = 0
-            if blank_lines > 2:
-                print(f"Line {line_num}: S006 More than two blank lines used")
             line_num += 1
 
 
@@ -45,4 +47,5 @@ def main():
     analyzer(filename)
 
 
-main()
+if __name__ == "__main__":
+    main()
